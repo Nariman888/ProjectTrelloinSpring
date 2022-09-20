@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout/layoutTrello.html">
+<head>
+    <title>Task page</title>
+</head>
+<div layout:fragment="mainContent">
+    <div class="d-flex mb-2" style="justify-content: space-between" >
+            <div>
+            <h4>
+                <label>Заголовок:&nbsp;</label>
+                <label class="fw-bold" th:text="${task.title}+'.'"></label>
+            </h4>
+            </div>
+    <div>
+        <div class="col-8 mx-auto">
+            <form th:action="@{'/deleteTASK'}" method="post">
+                <input hidden type="number" th:value="${task.id}" name="taskId">
+                <button class="btn btn-danger">Delete Task!</button>
+            </form>
+        </div>
+    </div>
+    </div>
+    <div class="mb-2">
+                <span>Описание:&nbsp;</span>
+                <textarea class="form-control" name="description" th:text="${task.description}" th:readonly="${task.status>=3}"></textarea>
+    </div>
+        <div class="mb-2">
+                <form th:action="@{'/renewTaskInfo'}" method="post" style="display: flex">
+                    <input >
+                    <select class="form-select" style="width: 250px" name="status">
+                        <option th:selected="${task.status}==0" th:value="0"><span class="text-danger fw-bold">TO DO</span></option>
+                        <option th:selected="${task.status}==1" th:value="1"><span class="text-dark fw-bold">IN TEST</span></option>
+                        <option th:selected="${task.status}==2" th:value="2"><span class="text-info fw-bold">DONE</span></option>
+                        <option th:selected="${task.status}==3" th:value="3"><span class="text-success fw-bold">FAILED</span></option>
+                    </select>
+                    <button class="btn btn-success ms-3" type="submit">✎&nbsp;Update</button>
+                    <input hidden type="number" th:value="${task.id}" name="id">
+                </form>
+            </div>
+
+
+
+        <div class="row">
+            <div class="col-6 mx-auto mt-4">
+                <form class="mt-3" th:action="@{'/addComment'}" method="post">
+                    <div class="mb-3">
+                        <input hidden th:value="${task.id}" name="taskId">
+                        <label for="input6" class="form-label" th:text="${'Add Comment'}"> </label>
+                        <textarea name="comment" id="input6" class="form-control" style="height: 125px"></textarea>
+                    </div>
+                    <div style="display: flex; align-items: center">
+                        <button class="btn btn-success" type="submit" style="width: 50%">Add Comment</button>
+                    </div>
+                </form>
+
+                <div th:if="${comments}!=null" class="mt-4">
+                    <label style="font-weight: bold" class="form-label" th:text="${'Comment: '}"></label>
+                    <div class="p-2">
+                        <form th:each="comment: ${comments}" >
+                            <div class="mb-3">
+                                <textarea th:text="${comment.comment}" readonly id="input7" class="form-control" style="height: 50px"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</div>
+</html>

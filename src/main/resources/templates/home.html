@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layoutTrello.html}">
+<div layout:fragment="mainContent">
+    <div class="row">
+        <div class="col-12 mx-auto mt-2">
+            <button type="button" class="bg-white border-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <h5><b>+ New Folder</b></h5>
+            </button>
+        </div>
+    </div>
+    <div class="row" th:each="folder:${folders}">
+        <div class="col-12 mx-auto mt-3">
+            <div class="card">
+                <div class="card">
+                    <div class="card-header" style="display: flex; justify-content: space-between">
+                        <h4 th:name="name" th:text="${folder.name}"></h4>
+
+                        <form method="post" th:action="@{'/deleteFolder'}">
+                            <input name="id" hidden th:value="${folder.id}" type="number">
+                            <button class="btn btn-danger" type="submit" style="text-align: justify">×</button>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <a class="btn btn-primary mt-3" th:href="@{'/folder/'+${folder.id}}"><i class="fa fa-folder"></i>&nbsp;Просмотреть папку</a>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ADD NEW FOLDER</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" th:action="@{'/addFolder'}">
+                    <label for="input1" class="form-label">Введите заголовок папки</label>
+                    <input id="input1"  placeholder="Folder Name" type="text" class="form-control" name="name">
+                    <button type="submit" class="btn btn-success mt-3">Добавить</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</html>
